@@ -338,6 +338,7 @@ class CAR(Platforms):
     [HondaCarDocs("Honda Clarity 2018-2021", "All", min_steer_speed=12. * CV.MPH_TO_MS)],
     CarSpecs(mass=4052. * CV.LB_TO_KG, wheelbase=2.75, centerToFrontRatio= ret.wheelbase * 0.4, steerRatio=16.50), # FIXME TODO: Figure out centerToFrontRatio as ret appears to be undefined
     radar_dbc_dict('honda_clarity_hybrid_2018_can_generated', 'acura_ilx_2016_nidec'),
+    flags=HondaFlags.HAS_EPB
   )
 
 
