@@ -26,7 +26,7 @@ class CarInterface(CarInterfaceBase, CarInterfaceExt):
     CarInterfaceBase.__init__(self, CP, CP_SP)
     CarInterfaceExt.__init__(self, CP, CarInterfaceBase)
 
-  def get_pid_accel_limits(self, CP, current_speed, cruise_speed):
+  def get_pid_accel_limits(self, current_speed, cruise_speed):
     if self.CP.carFingerprint in HONDA_BOSCH:
       return CarControllerParams.BOSCH_ACCEL_MIN, CarControllerParams.BOSCH_ACCEL_MAX
     else:
