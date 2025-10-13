@@ -22,9 +22,12 @@ class CarInterface(CarInterfaceBase, CarInterfaceExt):
   CarController = CarController
   RadarInterface = RadarInterface
 
-  @staticmethod
-  def get_pid_accel_limits(CP, current_speed, cruise_speed):
-    if CP.carFingerprint in HONDA_BOSCH:
+  def __init__(self, CP, CP_SP):
+    CarInterfaceBase.__init__(self, CP, CP_SP)
+    CarInterfaceExt.__init__(self, CP, CarInterfaceBase)
+
+  def get_pid_accel_limits(self, CP, current_speed, cruise_speed):
+    if self.CP.carFingerprint in HONDA_BOSCH:
       return CarControllerParams.BOSCH_ACCEL_MIN, CarControllerParams.BOSCH_ACCEL_MAX
     else:
       # NIDECs don't allow acceleration near cruise_speed,
