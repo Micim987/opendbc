@@ -10,10 +10,11 @@ class CarInterfaceExt:
     self.CP = CP
     self.CP_SP = CP_SP
 
-  def get_pid_accel_limits(self, CP, current_speed, cruise_speed):
-    if self.CP.carFingerprint in HONDA_BOSCH:
+  @staticmethod
+  def get_pid_accel_limits(CP, CP_SP, current_speed, cruise_speed):
+    if CP.carFingerprint in HONDA_BOSCH:
       return CarControllerParams.BOSCH_ACCEL_MIN, CarControllerParams.BOSCH_ACCEL_MAX
-    elif self.CP.carFingerprint not in HONDA_BOSCH and self.CP_SP.enableGasInterceptor:
+    elif CP.carFingerprint not in HONDA_BOSCH and CP_SP.enableGasInterceptor:
       return CarControllerParamsExt.NIDEC_PEDAL_ACCEL_MIN, CarControllerParamsExt.NIDEC_PEDAL_ACCEL_MAX
     else:
       # NIDECs don't allow acceleration near cruise_speed,
