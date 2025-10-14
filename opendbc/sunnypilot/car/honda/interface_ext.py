@@ -1,5 +1,4 @@
 
-from opendbc.car import structs
 from opendbc.car.honda.values import CarControllerParams, HONDA_BOSCH
 from opendbc.sunnypilot.car.honda.values_ext import CarControllerParamsExt
 import numpy as np
