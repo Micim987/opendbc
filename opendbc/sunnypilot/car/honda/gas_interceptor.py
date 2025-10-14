@@ -10,7 +10,7 @@ import numpy as np
 from opendbc.car import structs
 from opendbc.car.can_definitions import CanData
 from opendbc.sunnypilot.car import create_gas_interceptor_command
-
+from opendbc.car.honda.values import CAR
 
 class GasInterceptorCarController:
   def __init__(self, CP: structs.CarParams, CP_SP: structs.CarParamsSP):
@@ -25,8 +25,11 @@ class GasInterceptorCarController:
     can_sends = []
 
     if self.CP_SP.enableGasInterceptor:
+      if self.CP.carFingerprint in (CAR.HONDA_CIVIC, CAR.HONDA_CLARITY):
+        gas_mult = 1.0
+      else:
       # way too aggressive at low speed without this
-      gas_mult = np.interp(CS.out.vEgo, [0., 10.], [0.4, 1.0])
+        gas_mult = np.interp(CS.out.vEgo, [0., 10.], [0.4, 1.0])
       # send exactly zero if apply_gas is zero. Interceptor will send the max between read value and apply_gas.
       # This prevents unexpected pedal range rescaling
       # Sending non-zero gas when OP is not enabled will cause the PCM not to respond to throttle as expected
