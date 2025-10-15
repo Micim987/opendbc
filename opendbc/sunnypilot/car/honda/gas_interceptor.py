@@ -25,10 +25,11 @@ class GasInterceptorCarController:
     can_sends = []
 
     if self.CP_SP.enableGasInterceptor:
+      # TODO: Add more vehicles to the list if they are found to have slow acceleration from 0 m/s to 10 m/s
       if self.CP.carFingerprint in (CAR.HONDA_CIVIC, CAR.HONDA_CLARITY):
         gas_mult = 1.0
       else:
-      # way too aggressive at low speed without this
+      # way too aggressive at low speed without this on certain models
         gas_mult = np.interp(CS.out.vEgo, [0., 10.], [0.4, 1.0])
       # send exactly zero if apply_gas is zero. Interceptor will send the max between read value and apply_gas.
       # This prevents unexpected pedal range rescaling
