@@ -161,8 +161,21 @@ class CarState(CarStateBase, CarStateExt):
 
     ret.gasPressed = cp.vl["POWERTRAIN_DATA"]["PEDAL_GAS"] > 1e-5
 
-    # ret.steeringTorque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
-    # ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD.get(self.CP.carFingerprint, 1200)
+    if self.cp.carFingerprint == CAR.HONDA_CLARITY:
+      # Store raw driver torque in steeringTorqueEps for comparison purposes (temporary)
+      ret.steeringTorqueEps = cp.vl['STEERING']['DRIVER_TORQUE']
+
+       # Read raw driver torque from CAN bus
+      raw_driver_torque = cp.vl['STEERING']['DRIVER_TORQUE']
+
+      # Apply filtering and update CarState with smoothed torque value
+      ret.steeringTorque = self._drv_filt.update(raw_driver_torque)
+
+      ret.steeringPressed = abs(ret.steeringTorque ) > 1200
+    else:
+      ret.steeringTorque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
+      ret.steeringTorqueEps = cp.vl['IS_DAT_DIRA']['EPS_TORQUE']
+      ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD.get(self.CP.carFingerprint, 1200)
 
     if self.CP.carFingerprint in HONDA_BOSCH:
       # The PCM always manages its own cruise control state, but doesn't publish it
@@ -204,22 +217,6 @@ class CarState(CarStateBase, CarStateExt):
     if self.CP.carFingerprint in (CAR.HONDA_PILOT, CAR.HONDA_RIDGELINE):
       if ret.brake > 0.1:
         ret.brakePressed = True
-
-    if self.cp.carFingerprint == CAR.HONDA_CLARITY:
-      # Store raw driver torque in steeringTorqueEps for comparison purposes (temporary)
-      ret.steeringTorqueEps = cp.vl['STEERING']['DRIVER_TORQUE']
-
-       # Read raw driver torque from CAN bus
-      raw_driver_torque = cp.vl['STEERING']['DRIVER_TORQUE']
-
-      # Apply filtering and update CarState with smoothed torque value
-      ret.steeringTorque = self._drv_filt.update(raw_driver_torque)
-
-      ret.steeringPressed = abs(ret.steeringTorque ) > 1200
-    else:
-      ret.steeringTorque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
-      ret.steeringTorqueEps = cp.vl['IS_DAT_DIRA']['EPS_TORQUE']
-      ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD.get(self.CP.carFingerprint, 1200)
 
     if self.CP.carFingerprint in HONDA_BOSCH:
       # TODO: find the radarless AEB_STATUS bit and make sure ACCEL_COMMAND is correct to enable AEB alerts
