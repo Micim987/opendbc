@@ -161,7 +161,7 @@ class CarState(CarStateBase, CarStateExt):
 
     ret.gasPressed = cp.vl["POWERTRAIN_DATA"]["PEDAL_GAS"] > 1e-5
 
-    if self.cp.carFingerprint == CAR.HONDA_CLARITY:
+    if self.CP.carFingerprint == CAR.HONDA_CLARITY:
       # Store raw driver torque in steeringTorqueEps for comparison purposes (temporary)
       ret.steeringTorqueEps = cp.vl['STEERING']['DRIVER_TORQUE']
 
@@ -171,7 +171,7 @@ class CarState(CarStateBase, CarStateExt):
       # Apply filtering and update CarState with smoothed torque value
       ret.steeringTorque = self._drv_filt.update(raw_driver_torque)
 
-      ret.steeringPressed = abs(ret.steeringTorque ) > 1200
+      ret.steeringPressed = abs(ret.steeringTorque) > 1200
     else:
       ret.steeringTorque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
       ret.steeringTorqueEps = cp.vl['IS_DAT_DIRA']['EPS_TORQUE']
