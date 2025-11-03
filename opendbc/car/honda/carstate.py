@@ -166,7 +166,7 @@ class CarState(CarStateBase, CarStateExt):
       ret.steeringTorqueEps = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
 
       # Read raw driver torque from CAN bus
-      raw_driver_torque = cp.vl['STEERING']['DRIVER_TORQUE']
+      raw_driver_torque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
 
       # Apply filtering and update CarState with smoothed torque value
       ret.steeringTorque = self._drv_filt.update(raw_driver_torque)
