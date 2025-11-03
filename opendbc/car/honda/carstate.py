@@ -165,7 +165,7 @@ class CarState(CarStateBase, CarStateExt):
       # Store raw driver torque in steeringTorqueEps for comparison purposes (temporary)
       ret.steeringTorqueEps = cp.vl['STEERING']['DRIVER_TORQUE']
 
-       # Read raw driver torque from CAN bus
+      # Read raw driver torque from CAN bus
       raw_driver_torque = cp.vl['STEERING']['DRIVER_TORQUE']
 
       # Apply filtering and update CarState with smoothed torque value
@@ -174,7 +174,7 @@ class CarState(CarStateBase, CarStateExt):
       ret.steeringPressed = abs(ret.steeringTorque) > 1200
     else:
       ret.steeringTorque = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
-      ret.steeringTorqueEps = cp.vl['IS_DAT_DIRA']['EPS_TORQUE']
+      # ret.steeringTorqueEps = cp.vl['IS_DAT_DIRA']['EPS_TORQUE']
       ret.steeringPressed = abs(ret.steeringTorque) > STEER_THRESHOLD.get(self.CP.carFingerprint, 1200)
 
     if self.CP.carFingerprint in HONDA_BOSCH:
