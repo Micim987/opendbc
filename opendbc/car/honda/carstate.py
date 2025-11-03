@@ -163,7 +163,7 @@ class CarState(CarStateBase, CarStateExt):
 
     if self.CP.carFingerprint == CAR.HONDA_CLARITY:
       # Store raw driver torque in steeringTorqueEps for comparison purposes (temporary)
-      ret.steeringTorqueEps = cp.vl['STEERING']['DRIVER_TORQUE']
+      ret.steeringTorqueEps = cp.vl["STEER_STATUS"]["STEER_TORQUE_SENSOR"]
 
       # Read raw driver torque from CAN bus
       raw_driver_torque = cp.vl['STEERING']['DRIVER_TORQUE']
